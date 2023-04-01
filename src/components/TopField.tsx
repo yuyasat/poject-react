@@ -1,10 +1,9 @@
 import React from 'react'
 import GridRow from './GridRow'
-import './Top.scss';
+import './TopField.scss';
 
-const Top = (props: any) => {
+const TopField = (props: any) => {
   const gridRows = props.topGridStates.map((gridStateRow: any, j: number) => {
-    console.log(j);
     return (
       <GridRow
         key={'row' + j}
@@ -20,4 +19,4 @@ const Top = (props: any) => {
   )
 }
 
-export default Top
+export default TopField

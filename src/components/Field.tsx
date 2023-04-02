@@ -9,6 +9,7 @@ import { TopState } from '../Types';
 import { getMovedFirstColumn, getMovedSecondColumn, getRotatedSecondColumn, getRotatedSecondRow } from '../modules/KeyOperation';
 import KeyCode from '../modules/KeyCode';
 import { allocateGrids, countColor, deleteColor, getDropedGridStates, isColumnFilled } from '../modules/GameAlgorithm';
+import Controller from './Controller';
 
 const getInitialColor = (j: number, i: number, topState: any) => {
   if (i === GameSetting.initialColumn && j === GameSetting.initialSecondRow) {
@@ -265,6 +266,7 @@ const Field = () => {
           {grids}
         </div>
       </div>
+      <Controller onKeyDown={handleKeyDown} />
     </div>
   )
 }

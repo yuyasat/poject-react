@@ -10,6 +10,8 @@ import { getMovedFirstColumn, getMovedSecondColumn, getRotatedSecondColumn, getR
 import KeyCode from '../modules/KeyCode';
 import { allocateGrids, countColor, deleteColor, getDropedGridStates, isColumnFilled } from '../modules/GameAlgorithm';
 import Controller from './Controller';
+import NextField from './NextField';
+import Result from './Result';
 
 const getInitialColor = (j: number, i: number, topState: any) => {
   if (i === GameSetting.initialColumn && j === GameSetting.initialSecondRow) {
@@ -265,6 +267,9 @@ const Field = () => {
             keyAccept={keyAccept} />
           {grids}
         </div>
+        <NextField nextNum={1} nextState={nextState} />
+        <NextField nextNum={2} nextState={nextNextState} />
+        <Result chainCount={chainCount} maxChainCount={maxChainCount} />
       </div>
       <Controller onKeyDown={handleKeyDown} />
     </div>

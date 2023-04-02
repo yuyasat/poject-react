@@ -1,9 +1,60 @@
+import _ from "lodash"
+
 import { TopState } from "../Types"
 
 import Color from "./Color"
 import GameSetting from './GameSetting'
+import KeyCode from "./KeyCode"
+import {
+  getMovedFirstColumn,
+  getMovedSecondColumn,
+  getRotatedSecondColumn,
+  getRotatedSecondRow
+} from "./KeyOperation"
 
-export function countColor(j: number, i: number, gridStates: any) {
+export const getTopState = (topState: TopState, keyCode: number) => {
+  if (keyCode === KeyCode.right) {
+    return {
+      firstColumn: getMovedFirstColumn(topState, 'right'),
+      secondColumn: getMovedSecondColumn(topState, 'right')
+    }
+  }
+  if (keyCode === KeyCode.left) {
+    return {
+      firstColumn: getMovedFirstColumn(topState, 'left'),
+      secondColumn: getMovedSecondColumn(topState, 'left')
+    }
+  }
+  if (keyCode === KeyCode.x || keyCode === KeyCode.up) {
+    return {
+      secondColumn: getRotatedSecondColumn(topState, 'right'),
+      secondRow: getRotatedSecondRow(topState, 'right')
+    }
+  }
+  if (keyCode === KeyCode.z) {
+    return {
+      secondColumn: getRotatedSecondColumn(topState, 'left'),
+      secondRow: getRotatedSecondRow(topState, 'left')
+    }
+  }
+}
+
+export const getTopGridStates = (topState: TopState) => {
+  const { firstColumn, firstRow, firstColor, secondColumn, secondRow, secondColor } = topState
+
+  let topGridStates = _.times(GameSetting.topFieldRow, () =>
+    _.times(GameSetting.column, () => ({
+      color: Color.none
+    }))
+  )
+
+  topGridStates[firstRow][firstColumn].color = firstColor
+  topGridStates[secondRow][secondColumn].color = secondColor
+
+  return topGridStates
+}
+
+export const countColor = (j: number, i: number, gridStates: any) => {
   const { color } = gridStates[j][i]
   let n = 1
   gridStates[j][i].color = Color.none
@@ -23,7 +74,7 @@ export function countColor(j: number, i: number, gridStates: any) {
   return n
 }
 
-export function deleteColor(j: number, i: number, gridStates: any) {
+export const deleteColor = (j: number, i: number, gridStates: any) => {
   const { color } = gridStates[j][i]
   gridStates[j][i].color = Color.none
   if (j - 1 >= 0 && gridStates[j - 1][i].color === color) {
@@ -41,7 +92,7 @@ export function deleteColor(j: number, i: number, gridStates: any) {
   return gridStates
 }
 
-export function allocateGrids(gridStates: any) {
+export const allocateGrids = (gridStates: any) => {
   let count = 0
   for (let i = 0; i < gridStates[0].length; i++) {
     let spaces = 0
@@ -58,7 +109,7 @@ export function allocateGrids(gridStates: any) {
   return { count, gridStates }
 }
 
-export function getDropedGridStates(gridStates: any, topState: TopState) {
+export const getDropedGridStates = (gridStates: any, topState: TopState) => {
   const { firstRow, firstColumn, secondRow, secondColumn } = topState
 
   let r1 = GameSetting.row - 1
@@ -85,7 +136,7 @@ export function getDropedGridStates(gridStates: any, topState: TopState) {
   return gridStates
 }
 
-export function isColumnFilled(gridStates: any, topState: TopState) {
+export const isColumnFilled = (gridStates: any, topState: TopState) => {
   const { firstColumn, secondColumn } = topState
 
   return firstColumn === secondColumn && gridStates[0][firstColumn].color !== Color.none

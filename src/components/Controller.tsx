@@ -3,7 +3,11 @@ import React from 'react'
 import ControllerButton from './ControllerButton'
 import './Controller.scss';
 
-const Controller = (props: any) => {
+interface Props {
+  onKeyDown: (e: KeyboardEvent) => any;
+}
+
+const Controller = (props: Props) => {
   return (
     <div>
       <div className='ControllerButtomWrap'>

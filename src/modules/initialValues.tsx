@@ -20,7 +20,7 @@ export const initialTopState: TopState = Object.assign(topStateField, {
 })
 
 
-const getInitialColor = (j: number, i: number, topState: any) => {
+const getInitialColor = (j: number, i: number, topState: TopState) => {
   if (i === GameSetting.initialColumn && j === GameSetting.initialSecondRow) {
     return topState.secondColor
   }

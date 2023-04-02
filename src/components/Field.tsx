@@ -3,7 +3,7 @@ import React, { useEffect, useReducer, useState } from 'react'
 import _ from 'lodash';
 
 import './Field.scss';
-import { TopState } from '../Types';
+import { GridState, TopState } from '../Types';
 import Color from '../modules/Color';
 import { allocateGrids, countColor, deleteColor, getDropedGridStates, getTopGridStates, getTopState, isColumnFilled } from '../modules/GameAlgorithm';
 import GameSetting from '../modules/GameSetting';
@@ -47,14 +47,14 @@ const Field = () => {
     }
   }, []);
 
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.keyCode === KeyCode.down) {
       handleDown()
       return
     }
 
 
-    setTopState((currentTopState: any) => {
+    setTopState((currentTopState: TopState) => {
       const _topState = Object.assign(
         {},
         currentTopState,
@@ -98,7 +98,7 @@ const Field = () => {
     setNextNextState(waitingNextNextState);
   }
 
-  const chain = (chainedGridStates: any, chainCount: number) => {
+  const chain = (chainedGridStates: GridState[][], chainCount: number) => {
     const {
       gridStates, countedChainCount
     } = getDeletedGridStates(chainedGridStates, chainCount)
@@ -116,10 +116,10 @@ const Field = () => {
     return gridStates
   }
 
-  const getDeletedGridStates = (gridStates: any, chainCount: number) => {
+  const getDeletedGridStates = (gridStates: GridState[][], chainCount: number) => {
     let deletedColor = Color.none
-    gridStates.forEach((grids: any, j: number) => {
-      grids.forEach((grid: any, i: number) => {
+    gridStates.forEach((grids: GridState[], j: number) => {
+      grids.forEach((grid: GridState, i: number) => {
         if (grid.color !== Color.none && countColor(j, i, gridStates) >= 4) {
           if (deletedColor === Color.none || deletedColor === grid.color) {
             deletedColor = grid.color
@@ -137,7 +137,7 @@ const Field = () => {
     return { gridStates, countedChainCount: chainCount }
   }
 
-  const dropGrids = (deletedGridStates: any, chainCount: number) => {
+  const dropGrids = (deletedGridStates: GridState[][], chainCount: number) => {
     const { count, gridStates } = allocateGrids(deletedGridStates)
 
     setGridStates(gridStates);
@@ -153,11 +153,8 @@ const Field = () => {
     <div>
       <div className='FieldWrap' style={styles.fieldWrap}>
         <div className='Field' style={styles.field}>
-          <TopField
-            topState={topState}
-            topGridStates={topGridStates}
-            keyAccept={keyAccept} />
-          {gridStates.map((gridStateRow: any, j: number) => (
+          <TopField topGridStates={topGridStates} />
+          {gridStates.map((gridStateRow: GridState[], j: number) => (
             <GridRow
               key={`row${j}`}
               type='Field'

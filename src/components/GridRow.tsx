@@ -1,10 +1,17 @@
 import React from 'react'
 
+import { GridState } from '../Types';
+
 import Grid from './Grid';
 import './GridRow.scss';
 
-const GridRow = (props: any) => {
-  const row = props.gridStateRow.map((gridState: any, i: number) => {
+interface Props {
+  type: string;
+  gridStateRow: GridState[];
+}
+
+const GridRow = (props: Props) => {
+  const row = props.gridStateRow.map((gridState: GridState, i: number) => {
     return (
       <Grid
         key={`grid${i}`}

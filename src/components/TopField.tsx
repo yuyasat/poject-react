@@ -1,10 +1,16 @@
 import React from 'react'
 
+import { GridState } from '../Types';
+
 import GridRow from './GridRow'
 import './TopField.scss';
 
-const TopField = (props: any) => {
-  const gridRows = props.topGridStates.map((gridStateRow: any, j: number) => {
+interface Props {
+  topGridStates: GridState[][];
+}
+
+const TopField = (props: Props) => {
+  const gridRows = props.topGridStates.map((gridStateRow: GridState[], j: number) => {
     return (
       <GridRow
         key={'row' + j}

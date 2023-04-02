@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-import { TopState } from "../Types"
+import { GridState, TopState } from "../Types"
 
 import Color from "./Color"
 import GameSetting from './GameSetting'
@@ -54,7 +54,7 @@ export const getTopGridStates = (topState: TopState) => {
   return topGridStates
 }
 
-export const countColor = (j: number, i: number, gridStates: any) => {
+export const countColor = (j: number, i: number, gridStates: GridState[][]) => {
   const { color } = gridStates[j][i]
   let n = 1
   gridStates[j][i].color = Color.none
@@ -74,7 +74,7 @@ export const countColor = (j: number, i: number, gridStates: any) => {
   return n
 }
 
-export const deleteColor = (j: number, i: number, gridStates: any) => {
+export const deleteColor = (j: number, i: number, gridStates: GridState[][]) => {
   const { color } = gridStates[j][i]
   gridStates[j][i].color = Color.none
   if (j - 1 >= 0 && gridStates[j - 1][i].color === color) {
@@ -92,7 +92,7 @@ export const deleteColor = (j: number, i: number, gridStates: any) => {
   return gridStates
 }
 
-export const allocateGrids = (gridStates: any) => {
+export const allocateGrids = (gridStates: GridState[][]) => {
   let count = 0
   for (let i = 0; i < gridStates[0].length; i++) {
     let spaces = 0
@@ -109,7 +109,7 @@ export const allocateGrids = (gridStates: any) => {
   return { count, gridStates }
 }
 
-export const getDropedGridStates = (gridStates: any, topState: TopState) => {
+export const getDropedGridStates = (gridStates: GridState[][], topState: TopState) => {
   const { firstRow, firstColumn, secondRow, secondColumn } = topState
 
   let r1 = GameSetting.row - 1
@@ -136,7 +136,7 @@ export const getDropedGridStates = (gridStates: any, topState: TopState) => {
   return gridStates
 }
 
-export const isColumnFilled = (gridStates: any, topState: TopState) => {
+export const isColumnFilled = (gridStates: GridState[][], topState: TopState) => {
   const { firstColumn, secondColumn } = topState
 
   return firstColumn === secondColumn && gridStates[0][firstColumn].color !== Color.none

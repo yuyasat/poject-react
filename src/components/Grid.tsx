@@ -1,9 +1,14 @@
 import React from 'react'
 
+import { GridState } from '../Types';
 import Color from '../modules/Color';
 import './Grid.scss';
 
-const Grid = (props: any) => {
+interface Props {
+  gridState: GridState;
+  type?: string;
+}
+const Grid = (props: Props) => {
   const colorName = props.gridState.color === Color.none ? '' : `Grid${props.gridState.color}`
 
   return (

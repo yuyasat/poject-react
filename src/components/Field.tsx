@@ -48,7 +48,7 @@ const Field = () => {
   }, []);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.keyCode === KeyCode.down) {
+    if (e.code === KeyCode.down) {
       handleDown()
       return
     }
@@ -58,7 +58,7 @@ const Field = () => {
       const _topState = Object.assign(
         {},
         currentTopState,
-        getTopState(currentTopState, e.keyCode)
+        getTopState(currentTopState, e.code)
       )
       setTopGridStates(getTopGridStates(_topState));
       return _topState;

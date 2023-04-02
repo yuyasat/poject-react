@@ -11,7 +11,7 @@ interface Props {
 const ControllerButton = (props: Props) => {
   const handleClick = () => {
     const _keyName = props.keyName.toLowerCase() as 'left' | 'up' | 'right' | 'down' | 'x' | 'z'
-    props.onClick({ keyCode: KeyCode[_keyName] } as KeyboardEvent)
+    props.onClick({ code: KeyCode[_keyName] } as KeyboardEvent)
   }
   return (
     <div className={`Button${props.keyName}`} onClick={handleClick} />

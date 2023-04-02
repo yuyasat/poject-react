@@ -12,7 +12,7 @@ import {
   getRotatedSecondRow
 } from "./KeyOperation"
 
-export const getTopState = (topState: TopState, keyCode: number) => {
+export const getTopState = (topState: TopState, keyCode: string) => {
   if (keyCode === KeyCode.right) {
     return {
       firstColumn: getMovedFirstColumn(topState, 'right'),

@@ -1,8 +1,8 @@
 export default {
-  left: 37,
-  up: 38,
-  right: 39,
-  down: 40,
-  x: 88,
-  z: 90
+  left: 'ArrowLeft',
+  up: 'ArrowUp',
+  right: 'ArrowRight',
+  down: 'ArrowDown',
+  x: 'KeyX',
+  z: 'KeyZ'
 }

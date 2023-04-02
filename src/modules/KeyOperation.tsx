@@ -1,4 +1,5 @@
 import { TopState } from '../Types'
+
 import Setting from './GameSetting'
 
 export const getMovedFirstColumn = (topState: TopState, move: string) => {

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Color from '../modules/Color';
 import './Grid.scss';
 

@@ -1,7 +1,7 @@
-import Color from "./Color"
-
-import GameSetting from './GameSetting'
 import { TopState } from "../Types"
+
+import Color from "./Color"
+import GameSetting from './GameSetting'
 
 export function countColor(j: number, i: number, gridStates: any) {
   const { color } = gridStates[j][i]

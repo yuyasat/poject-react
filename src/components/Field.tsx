@@ -1,17 +1,20 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import Color from '../modules/Color';
-import GameSetting from '../modules/GameSetting';
-import TopField from './TopField';
+
 import _ from 'lodash';
+
 import './Field.scss';
-import GridRow from './GridRow';
 import { TopState } from '../Types';
-import { getMovedFirstColumn, getMovedSecondColumn, getRotatedSecondColumn, getRotatedSecondRow } from '../modules/KeyOperation';
-import KeyCode from '../modules/KeyCode';
+import Color from '../modules/Color';
 import { allocateGrids, countColor, deleteColor, getDropedGridStates, isColumnFilled } from '../modules/GameAlgorithm';
+import GameSetting from '../modules/GameSetting';
+import KeyCode from '../modules/KeyCode';
+import { getMovedFirstColumn, getMovedSecondColumn, getRotatedSecondColumn, getRotatedSecondRow } from '../modules/KeyOperation';
+
 import Controller from './Controller';
+import GridRow from './GridRow';
 import NextField from './NextField';
 import Result from './Result';
+import TopField from './TopField';
 
 const getInitialColor = (j: number, i: number, topState: any) => {
   if (i === GameSetting.initialColumn && j === GameSetting.initialSecondRow) {
@@ -58,8 +61,6 @@ const initialNextNextState = {
   firstColor: Math.floor(Math.random() * 4) + 1,
   secondColor: Math.floor(Math.random() * 4) + 1
 }
-
-
 
 const getTopState = (topState: TopState, keyCode: number) => {
   if (keyCode === KeyCode.right) {

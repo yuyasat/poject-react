@@ -99,10 +99,11 @@ const Field = () => {
     chainCount = countedChainCount
 
     setTimeout(() => {
-      setGridStates(gridStates)
-
       setTimeout(() => {
-        dropGrids(gridStates, chainCount)
+        setGridStates(gridStates)
+        setTimeout(() => {
+          dropGrids(gridStates, chainCount)
+        }, 200)
       }, 200)
     }, 200)
 

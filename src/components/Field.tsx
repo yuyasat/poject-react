@@ -32,20 +32,14 @@ const Field = () => {
   useEffect(() => {
     if (keyAccept) {
       document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        // イベントリスナを解除
+        document.removeEventListener('keydown', handleKeyDown);
+      };
     } else {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [keyAccept]);
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, []);
+  }, [keyAccept, topState, topGridStates]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.code === KeyCode.down) {
@@ -53,16 +47,15 @@ const Field = () => {
       return
     }
 
+    const _topState = Object.assign(
+      {},
+      topState,
+      getTopState(topState, e.code)
+    )
 
-    setTopState((currentTopState: TopState) => {
-      const _topState = Object.assign(
-        {},
-        currentTopState,
-        getTopState(currentTopState, e.code)
-      )
-      setTopGridStates(getTopGridStates(_topState));
-      return _topState;
-    })
+
+    setTopState(_topState);
+    setTopGridStates(getTopGridStates(_topState));
   }
 
   const handleDown = () => {

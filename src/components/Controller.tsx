@@ -17,7 +17,9 @@ const Controller = (props: Props) => {
         <ControllerButton keyName='Z' onClick={props.onKeyDown} />
         <div className='Clear' />
       </div>
-      <ControllerButton keyName='Down' onClick={props.onKeyDown} />
+      <div className='ControllerButtomWrap'>
+        <ControllerButton keyName='Down' onClick={props.onKeyDown} />
+      </div>
     </div>
   )
 }

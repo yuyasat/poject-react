@@ -6,6 +6,6 @@ export const styles = {
     height: `${(GameSetting.row * 20) + 140}px`
   },
   field: {
-    width: `${(GameSetting.column * 30) + 50}px`
+    width: `${(GameSetting.column * 30) + 30}px`
   }
 }

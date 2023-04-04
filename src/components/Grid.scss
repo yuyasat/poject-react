@@ -1,8 +1,14 @@
 .Grid {
   float: left;
   width: 30px;
-  height: 20px;
+  height: 30px;
   white-space: pre-wrap;
+}
+
+.GridCircle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .TopGrid {
@@ -10,7 +16,16 @@
 }
 
 .FieldGrid {
-  border: 1px solid #000000;
+  border-top: 1px solid #7a7a7a;
+  border-left: 1px solid #7a7a7a;
+}
+
+.RightGrid {
+  border-right: 1px solid #7a7a7a;
+}
+
+.ButtomGrid {
+  border-bottom: 1px solid #7a7a7a;
 }
 
 .Grid1 {

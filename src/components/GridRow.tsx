@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { GridState } from '../Types';
+import GameSetting from '../modules/GameSetting';
+
 
 import Grid from './Grid';
 import './GridRow.scss';
@@ -8,6 +10,7 @@ import './GridRow.scss';
 interface Props {
   type: string;
   gridStateRow: GridState[];
+  isEndOfRow?: boolean;
 }
 
 const GridRow = (props: Props) => {
@@ -16,7 +19,9 @@ const GridRow = (props: Props) => {
       <Grid
         key={`grid${i}`}
         type={props.type}
-        gridState={gridState} />
+        gridState={gridState}
+        isEndOfColumn={i === GameSetting.column - 1}
+        isEndOfRow={props.isEndOfRow} />
     )
   })
 

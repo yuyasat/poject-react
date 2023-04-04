@@ -152,7 +152,8 @@ const Field = () => {
             <GridRow
               key={`row${j}`}
               type='Field'
-              gridStateRow={gridStateRow} />
+              gridStateRow={gridStateRow}
+              isEndOfRow={j === GameSetting.row - 1} />
           )
           )}
         </div>

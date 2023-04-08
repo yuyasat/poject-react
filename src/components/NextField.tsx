@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import Grid from './Grid';
 
@@ -12,15 +12,16 @@ interface Props {
   };
 }
 const NextField = (props: Props) => {
-  const { firstColor, secondColor } = props.nextState
+  const { firstColor, secondColor } = props.nextState;
 
   return (
-    <div className='NextField'>
+    <div className="NextField">
       Next{props.nextNum}
-      <Grid gridState={{ color: secondColor }} /><br />
+      <Grid gridState={{ color: secondColor }} />
+      <br />
       <Grid gridState={{ color: firstColor }} />
     </div>
-  )
-}
+  );
+};
 
-export default NextField
+export default NextField;

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import KeyCode from '../modules/KeyCode'
+import KeyCode from '../modules/KeyCode';
 import './ControllerButton.scss';
 
 interface Props {
@@ -10,12 +10,10 @@ interface Props {
 
 const ControllerButton = (props: Props) => {
   const handleClick = () => {
-    const _keyName = props.keyName.toLowerCase() as 'left' | 'up' | 'right' | 'down' | 'x' | 'z'
-    props.onClick({ code: KeyCode[_keyName] } as KeyboardEvent)
-  }
-  return (
-    <div className={`Button${props.keyName}`} onClick={handleClick} />
-  )
-}
+    const _keyName = props.keyName.toLowerCase() as 'left' | 'up' | 'right' | 'down' | 'x' | 'z';
+    props.onClick({ code: KeyCode[_keyName] } as KeyboardEvent);
+  };
+  return <div className={`Button${props.keyName}`} onClick={handleClick} />;
+};
 
-export default ControllerButton
+export default ControllerButton;

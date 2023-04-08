@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import ControllerButton from './ControllerButton'
+import ControllerButton from './ControllerButton';
 import './Controller.scss';
 
 interface Props {
@@ -10,18 +10,18 @@ interface Props {
 const Controller = (props: Props) => {
   return (
     <div>
-      <div className='ControllerButtomWrap'>
-        <ControllerButton keyName='Left' onClick={props.onKeyDown} />
-        <ControllerButton keyName='Right' onClick={props.onKeyDown} />
-        <ControllerButton keyName='X' onClick={props.onKeyDown} />
-        <ControllerButton keyName='Z' onClick={props.onKeyDown} />
-        <div className='Clear' />
+      <div className="ControllerButtomWrap">
+        <ControllerButton keyName="Left" onClick={props.onKeyDown} />
+        <ControllerButton keyName="Right" onClick={props.onKeyDown} />
+        <ControllerButton keyName="X" onClick={props.onKeyDown} />
+        <ControllerButton keyName="Z" onClick={props.onKeyDown} />
+        <div className="Clear" />
       </div>
-      <div className='ControllerButtomWrap'>
-        <ControllerButton keyName='Down' onClick={props.onKeyDown} />
+      <div className="ControllerButtomWrap">
+        <ControllerButton keyName="Down" onClick={props.onKeyDown} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Controller
+export default Controller;

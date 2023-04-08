@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 import _ from 'lodash';
 
@@ -6,12 +6,24 @@ import './Field.scss';
 import { GridState } from '../Types';
 import Color from '../modules/Color';
 import {
-  allocateGrids, countColor, deleteColor, getDropedGridStates, getTopGridStates, getTopState, isColumnFilled
+  allocateGrids,
+  countColor,
+  deleteColor,
+  getDropedGridStates,
+  getTopGridStates,
+  getTopState,
+  isColumnFilled,
 } from '../modules/GameAlgorithm';
 import GameSetting from '../modules/GameSetting';
 import { styles } from '../modules/GameSettingStyle';
 import KeyCode from '../modules/KeyCode';
-import { initialGridState, initialNextNextState, initialNextState, initialTopGridStates, initialTopState } from '../modules/initialValues';
+import {
+  initialGridState,
+  initialNextNextState,
+  initialNextState,
+  initialTopGridStates,
+  initialTopState,
+} from '../modules/initialValues';
 
 import Controller from './Controller';
 import GridRow from './GridRow';
@@ -29,134 +41,131 @@ const Field = () => {
   const [maxChainCount, setMaxChainCount] = useState(0);
   const [keyAccept, setKeyAccept] = useState(true);
 
-
   useEffect(() => {
     if (keyAccept) {
-      document.addEventListener('keydown', handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown);
       return () => {
         // イベントリスナを解除
         document.removeEventListener('keydown', handleKeyDown);
       };
     } else {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('keydown', handleKeyDown);
     }
   }, [keyAccept, topState, topGridStates]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.code === KeyCode.down) {
-      handleDown()
-      return
+      handleDown();
+      return;
     }
 
-    const _topState = Object.assign(
-      {},
-      topState,
-      getTopState(topState, e.code)
-    )
+    const _topState = Object.assign({}, topState, getTopState(topState, e.code));
 
     setTopState(_topState);
     setTopGridStates(getTopGridStates(_topState));
-  }
+  };
 
   const handleDown = () => {
-    if (isColumnFilled(gridStates, topState)) { return }
+    if (isColumnFilled(gridStates, topState)) {
+      return;
+    }
 
-    const _gridStates = getDropedGridStates(gridStates, topState)
+    const _gridStates = getDropedGridStates(gridStates, topState);
 
     setTimeout(() => {
-      setGridStates(_gridStates)
+      setGridStates(_gridStates);
       setTimeout(() => {
-        chain(_gridStates, 0)
-      }, 200)
-    }, 200)
+        chain(_gridStates, 0);
+      }, 200);
+    }, 200);
     setKeyAccept(false);
 
     const waitingTopState = Object.assign(initialTopState, {
       firstColor: nextState.firstColor,
-      secondColor: nextState.secondColor
-    })
+      secondColor: nextState.secondColor,
+    });
 
     const waitingNextState = {
       firstColor: nextNextState.firstColor,
-      secondColor: nextNextState.secondColor
-    }
+      secondColor: nextNextState.secondColor,
+    };
 
     const waitingNextNextState = {
       firstColor: Math.floor(Math.random() * 4) + 1,
-      secondColor: Math.floor(Math.random() * 4) + 1
-    }
+      secondColor: Math.floor(Math.random() * 4) + 1,
+    };
 
     setTopGridStates(getTopGridStates(waitingTopState));
     setTopState(waitingTopState);
     setNextState(waitingNextState);
     setNextNextState(waitingNextNextState);
-  }
+  };
 
   const chain = (chainedGridStates: GridState[][], chainCount: number) => {
-    const {
-      gridStates, countedChainCount
-    } = getDeletedGridStates(chainedGridStates, chainCount)
+    const { gridStates, countedChainCount } = getDeletedGridStates(chainedGridStates, chainCount);
 
     setTimeout(() => {
       setTimeout(() => {
-        setGridStates(gridStates)
+        setGridStates(gridStates);
         setTimeout(() => {
-          dropGrids(gridStates, countedChainCount)
-        }, 150)
-      }, 200)
-    }, 200)
+          dropGrids(gridStates, countedChainCount);
+        }, 150);
+      }, 200);
+    }, 200);
 
-    return gridStates
-  }
+    return gridStates;
+  };
 
   const getDeletedGridStates = (gridStates: GridState[][], chainCount: number) => {
-    let _gridStates = JSON.parse(JSON.stringify(gridStates))
-    let deletedColor = Color.none
+    let _gridStates = JSON.parse(JSON.stringify(gridStates));
+    let deletedColor = Color.none;
     _gridStates.forEach((grids: GridState[], j: number) => {
       grids.forEach((grid: GridState, i: number) => {
         if (grid.color !== Color.none && countColor(j, i, gridStates) >= 4) {
           if (deletedColor === Color.none || deletedColor === grid.color) {
-            deletedColor = grid.color
-            chainCount++
+            deletedColor = grid.color;
+            chainCount++;
           }
-          _gridStates = deleteColor(j, i, gridStates)
-          setGridStates(_gridStates)
+          _gridStates = deleteColor(j, i, gridStates);
+          setGridStates(_gridStates);
           setChainCount(chainCount);
           if (maxChainCount < chainCount) {
             setMaxChainCount(chainCount);
           }
         }
-      })
-    })
+      });
+    });
 
-    return { gridStates: _gridStates, countedChainCount: chainCount }
-  }
+    return { gridStates: _gridStates, countedChainCount: chainCount };
+  };
 
   const dropGrids = (deletedGridStates: GridState[][], chainCount: number) => {
-    const { count, gridStates } = allocateGrids(deletedGridStates)
+    const { count, gridStates } = allocateGrids(deletedGridStates);
 
     setGridStates(gridStates);
 
     if (count > 0) {
-      setTimeout(() => { chain(gridStates, chainCount) }, 200)
+      setTimeout(() => {
+        chain(gridStates, chainCount);
+      }, 200);
     } else {
       setKeyAccept(true);
     }
-  }
+  };
 
   return (
     <div>
-      <div className='FieldWrap' style={styles.fieldWrap}>
-        <div className='Field' style={styles.field}>
+      <div className="FieldWrap" style={styles.fieldWrap}>
+        <div className="Field" style={styles.field}>
           <TopField topGridStates={topGridStates} />
           {gridStates.map((gridStateRow: GridState[], j: number) => (
             <GridRow
               key={`row${j}`}
-              type='Field'
+              type="Field"
               gridStateRow={gridStateRow}
-              isEndOfRow={j === GameSetting.row - 1} />
-          )
-          )}
+              isEndOfRow={j === GameSetting.row - 1}
+            />
+          ))}
         </div>
         <NextField nextNum={1} nextState={nextState} />
         <NextField nextNum={2} nextState={nextNextState} />
@@ -164,7 +173,7 @@ const Field = () => {
       </div>
       <Controller onKeyDown={handleKeyDown} />
     </div>
-  )
-}
+  );
+};
 
-export default Field
+export default Field;

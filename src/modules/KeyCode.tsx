@@ -4,5 +4,5 @@ export default {
   right: 'ArrowRight',
   down: 'ArrowDown',
   x: 'KeyX',
-  z: 'KeyZ'
-}
+  z: 'KeyZ',
+};

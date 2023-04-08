@@ -1,8 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 import { GridState } from '../Types';
 import GameSetting from '../modules/GameSetting';
-
 
 import Grid from './Grid';
 import './GridRow.scss';
@@ -21,15 +20,12 @@ const GridRow = (props: Props) => {
         type={props.type}
         gridState={gridState}
         isEndOfColumn={i === GameSetting.column - 1}
-        isEndOfRow={props.isEndOfRow} />
-    )
-  })
+        isEndOfRow={props.isEndOfRow}
+      />
+    );
+  });
 
-  return (
-    <div className='GridRow'>
-      {row}
-    </div>
-  )
-}
+  return <div className="GridRow">{row}</div>;
+};
 
-export default GridRow
+export default GridRow;

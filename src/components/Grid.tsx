@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import { GridState } from '../Types';
 import Color from '../modules/Color';
@@ -11,15 +11,17 @@ interface Props {
   isEndOfRow?: boolean;
 }
 const Grid = (props: Props) => {
-  const colorName = props.gridState.color === Color.none ? '' : `Grid${props.gridState.color}`
+  const colorName = props.gridState.color === Color.none ? '' : `Grid${props.gridState.color}`;
 
   return (
     <div
-      className={`Grid ${props.type}Grid ${props.type !== 'Top' && props.isEndOfColumn ? 'RightGrid' : ''} ${props.isEndOfRow ? 'ButtomGrid' : ''}`}>
+      className={`Grid ${props.type}Grid ${
+        props.type !== 'Top' && props.isEndOfColumn ? 'RightGrid' : ''
+      } ${props.isEndOfRow ? 'ButtomGrid' : ''}`}
+    >
       <div className={`GridCircle ${colorName}`} />
-    </div >
-  )
+    </div>
+  );
+};
 
-}
-
-export default Grid
+export default Grid;

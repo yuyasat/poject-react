@@ -55,85 +55,90 @@ export const getTopGridStates = (topState: TopState) => {
 }
 
 export const countColor = (j: number, i: number, gridStates: GridState[][]) => {
-  const { color } = gridStates[j][i]
+  const _gridStates = JSON.parse(JSON.stringify(gridStates))
+  const { color } = _gridStates[j][i]
   let n = 1
-  gridStates[j][i].color = Color.none
-  if (j - 1 >= 0 && gridStates[j - 1][i].color === color) {
-    n += countColor(j - 1, i, gridStates)
+  _gridStates[j][i].color = Color.none
+  if (j - 1 >= 0 && _gridStates[j - 1][i].color === color) {
+    n += countColor(j - 1, i, _gridStates)
   }
-  if (j + 1 < GameSetting.row && gridStates[j + 1][i].color === color) {
-    n += countColor(j + 1, i, gridStates)
+  if (j + 1 < GameSetting.row && _gridStates[j + 1][i].color === color) {
+    n += countColor(j + 1, i, _gridStates)
   }
-  if (i - 1 >= 0 && gridStates[j][i - 1].color === color) {
-    n += countColor(j, i - 1, gridStates)
+  if (i - 1 >= 0 && _gridStates[j][i - 1].color === color) {
+    n += countColor(j, i - 1, _gridStates)
   }
-  if (i + 1 < GameSetting.column && gridStates[j][i + 1].color === color) {
-    n += countColor(j, i + 1, gridStates)
+  if (i + 1 < GameSetting.column && _gridStates[j][i + 1].color === color) {
+    n += countColor(j, i + 1, _gridStates)
   }
-  gridStates[j][i].color = color
+  _gridStates[j][i].color = color
   return n
 }
 
 export const deleteColor = (j: number, i: number, gridStates: GridState[][]) => {
-  const { color } = gridStates[j][i]
-  gridStates[j][i].color = Color.none
-  if (j - 1 >= 0 && gridStates[j - 1][i].color === color) {
-    deleteColor(j - 1, i, gridStates)
+  let _gridStates = JSON.parse(JSON.stringify(gridStates))
+
+  const { color } = _gridStates[j][i]
+  _gridStates[j][i].color = Color.none
+  if (j - 1 >= 0 && _gridStates[j - 1][i].color === color) {
+    _gridStates = deleteColor(j - 1, i, _gridStates)
   }
-  if (j + 1 < GameSetting.row && gridStates[j + 1][i].color === color) {
-    deleteColor(j + 1, i, gridStates)
+  if (j + 1 < GameSetting.row && _gridStates[j + 1][i].color === color) {
+    _gridStates = deleteColor(j + 1, i, _gridStates)
   }
-  if (i - 1 >= 0 && gridStates[j][i - 1].color === color) {
-    deleteColor(j, i - 1, gridStates)
+  if (i - 1 >= 0 && _gridStates[j][i - 1].color === color) {
+    _gridStates = deleteColor(j, i - 1, _gridStates)
   }
-  if (i + 1 < GameSetting.column && gridStates[j][i + 1].color === color) {
-    deleteColor(j, i + 1, gridStates)
+  if (i + 1 < GameSetting.column && _gridStates[j][i + 1].color === color) {
+    _gridStates = deleteColor(j, i + 1, _gridStates)
   }
-  return gridStates
+  return _gridStates
 }
 
 export const allocateGrids = (gridStates: GridState[][]) => {
+  const _gridStates = JSON.parse(JSON.stringify(gridStates))
   let count = 0
-  for (let i = 0; i < gridStates[0].length; i++) {
+  for (let i = 0; i < _gridStates[0].length; i++) {
     let spaces = 0
-    for (let j = gridStates.length - 1; j >= 0; j--) {
-      if (!gridStates[j][i].color) {
+    for (let j = _gridStates.length - 1; j >= 0; j--) {
+      if (!_gridStates[j][i].color) {
         spaces++
       } else if (spaces > 0) {
-        gridStates[j + spaces][i].color = gridStates[j][i].color
-        gridStates[j][i].color = Color.none
+        _gridStates[j + spaces][i].color = _gridStates[j][i].color
+        _gridStates[j][i].color = Color.none
         count++
       }
     }
   }
-  return { count, gridStates }
+  return { count, gridStates: _gridStates }
 }
 
 export const getDropedGridStates = (gridStates: GridState[][], topState: TopState) => {
+  const _gridStates = JSON.parse(JSON.stringify(gridStates))
   const { firstRow, firstColumn, secondRow, secondColumn } = topState
 
   let r1 = GameSetting.row - 1
   let dropedFirstRow = secondRow === firstRow + 1 ? r1 - 1 : r1
-  while (r1 >= 0 && gridStates[r1][topState.firstColumn].color) {
+  while (r1 >= 0 && _gridStates[r1][topState.firstColumn].color) {
     dropedFirstRow = secondRow === firstRow + 1 ? r1 - 2 : r1 - 1
     r1--
   }
 
   let r2 = GameSetting.row - 1
   let dropedSecondRow = secondRow === firstRow - 1 ? r2 - 1 : r2
-  while (r2 >= 0 && gridStates[r2][secondColumn].color) {
+  while (r2 >= 0 && _gridStates[r2][secondColumn].color) {
     dropedSecondRow = secondRow === firstRow - 1 ? r2 - 2 : r2 - 1
     r2--
   }
 
   if (dropedFirstRow >= 0) {
-    gridStates[dropedFirstRow][firstColumn].color = topState.firstColor
+    _gridStates[dropedFirstRow][firstColumn].color = topState.firstColor
   }
   if (dropedSecondRow >= 0) {
-    gridStates[dropedSecondRow][secondColumn].color = topState.secondColor
+    _gridStates[dropedSecondRow][secondColumn].color = topState.secondColor
   }
 
-  return gridStates
+  return _gridStates
 }
 
 export const isColumnFilled = (gridStates: GridState[][], topState: TopState) => {

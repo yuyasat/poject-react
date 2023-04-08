@@ -3,13 +3,14 @@ import React, { useEffect, useReducer, useState } from 'react'
 import _ from 'lodash';
 
 import './Field.scss';
-import { GridState, TopState } from '../Types';
+import { GridState } from '../Types';
 import Color from '../modules/Color';
-import { allocateGrids, countColor, deleteColor, getDropedGridStates, getTopGridStates, getTopState, isColumnFilled } from '../modules/GameAlgorithm';
+import {
+  allocateGrids, countColor, deleteColor, getDropedGridStates, getTopGridStates, getTopState, isColumnFilled
+} from '../modules/GameAlgorithm';
 import GameSetting from '../modules/GameSetting';
 import { styles } from '../modules/GameSettingStyle';
 import KeyCode from '../modules/KeyCode';
-import { getMovedFirstColumn, getMovedSecondColumn, getRotatedSecondColumn, getRotatedSecondRow } from '../modules/KeyOperation';
 import { initialGridState, initialNextNextState, initialNextState, initialTopGridStates, initialTopState } from '../modules/initialValues';
 
 import Controller from './Controller';
@@ -53,7 +54,6 @@ const Field = () => {
       getTopState(topState, e.code)
     )
 
-
     setTopState(_topState);
     setTopGridStates(getTopGridStates(_topState));
   }
@@ -63,12 +63,13 @@ const Field = () => {
 
     const _gridStates = getDropedGridStates(gridStates, topState)
 
-    setGridStates(_gridStates);
-    setKeyAccept(false);
-
     setTimeout(() => {
-      chain(gridStates, 0)
+      setGridStates(_gridStates)
+      setTimeout(() => {
+        chain(_gridStates, 0)
+      }, 200)
     }, 200)
+    setKeyAccept(false);
 
     const waitingTopState = Object.assign(initialTopState, {
       firstColor: nextState.firstColor,
@@ -96,14 +97,12 @@ const Field = () => {
       gridStates, countedChainCount
     } = getDeletedGridStates(chainedGridStates, chainCount)
 
-    chainCount = countedChainCount
-
     setTimeout(() => {
       setTimeout(() => {
         setGridStates(gridStates)
         setTimeout(() => {
-          dropGrids(gridStates, chainCount)
-        }, 200)
+          dropGrids(gridStates, countedChainCount)
+        }, 150)
       }, 200)
     }, 200)
 
@@ -111,15 +110,17 @@ const Field = () => {
   }
 
   const getDeletedGridStates = (gridStates: GridState[][], chainCount: number) => {
+    let _gridStates = JSON.parse(JSON.stringify(gridStates))
     let deletedColor = Color.none
-    gridStates.forEach((grids: GridState[], j: number) => {
+    _gridStates.forEach((grids: GridState[], j: number) => {
       grids.forEach((grid: GridState, i: number) => {
         if (grid.color !== Color.none && countColor(j, i, gridStates) >= 4) {
           if (deletedColor === Color.none || deletedColor === grid.color) {
             deletedColor = grid.color
             chainCount++
           }
-          gridStates = deleteColor(j, i, gridStates)
+          _gridStates = deleteColor(j, i, gridStates)
+          setGridStates(_gridStates)
           setChainCount(chainCount);
           if (maxChainCount < chainCount) {
             setMaxChainCount(chainCount);
@@ -128,7 +129,7 @@ const Field = () => {
       })
     })
 
-    return { gridStates, countedChainCount: chainCount }
+    return { gridStates: _gridStates, countedChainCount: chainCount }
   }
 
   const dropGrids = (deletedGridStates: GridState[][], chainCount: number) => {

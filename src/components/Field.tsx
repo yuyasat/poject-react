@@ -53,7 +53,7 @@ const Field = () => {
     }
   }, [keyAccept, topState, topGridStates]);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent): void => {
     if (e.code === KeyCode.down) {
       handleDown();
       return;
@@ -65,7 +65,7 @@ const Field = () => {
     setTopGridStates(getTopGridStates(_topState));
   };
 
-  const handleDown = () => {
+  const handleDown = (): void => {
     if (isColumnFilled(gridStates, topState)) {
       return;
     }
@@ -101,8 +101,14 @@ const Field = () => {
     setNextNextState(waitingNextNextState);
   };
 
-  const chain = (chainedGridStates: GridState[][], chainCount: number) => {
-    const { gridStates, countedChainCount } = getDeletedGridStates(chainedGridStates, chainCount);
+  const chain = (chainedGridStates: GridState[][], chainCount: number): GridState[][] => {
+    let { gridStates, countedChainCount } = getDeletedGridStates(chainedGridStates, chainCount);
+    while (hasCountOver4(gridStates)) {
+      const { gridStates: _gridStates, countedChainCount: _countedChainCount } =
+        getDeletedGridStates(gridStates, countedChainCount, false);
+      gridStates = _gridStates;
+      countedChainCount = _countedChainCount;
+    }
 
     setTimeout(() => {
       setTimeout(() => {
@@ -116,15 +122,36 @@ const Field = () => {
     return gridStates;
   };
 
-  const getDeletedGridStates = (gridStates: GridState[][], chainCount: number) => {
+  const hasCountOver4 = (gridStates: GridState[][]): boolean => {
+    let _gridStates = JSON.parse(JSON.stringify(gridStates));
+    for (let j = 0; j < gridStates.length; j++) {
+      for (let i = 0; i < gridStates[j].length; i++) {
+        const grid = gridStates[j][i];
+        if (grid.color !== Color.none && countColor(j, i, _gridStates) >= 4) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const getDeletedGridStates = (
+    gridStates: GridState[][],
+    chainCount: number,
+    shoudCountChain: boolean = true
+  ): { gridStates: GridState[][]; countedChainCount: number } => {
     let _chainCount = JSON.parse(JSON.stringify(chainCount));
     let _gridStates = JSON.parse(JSON.stringify(gridStates));
     let deletedColor = Color.none;
     let isAlreadyCounted = false;
     _gridStates.forEach((grids: GridState[], j: number) => {
       grids.forEach((grid: GridState, i: number) => {
-        if (grid.color !== Color.none && countColor(j, i, gridStates) >= 4) {
-          if (!isAlreadyCounted && (deletedColor === Color.none || deletedColor === grid.color)) {
+        if (grid.color !== Color.none && countColor(j, i, _gridStates) >= 4) {
+          if (
+            !isAlreadyCounted &&
+            shoudCountChain &&
+            (deletedColor === Color.none || deletedColor === grid.color)
+          ) {
             isAlreadyCounted = true;
             deletedColor = grid.color;
             _chainCount++;
@@ -142,7 +169,7 @@ const Field = () => {
     return { gridStates: _gridStates, countedChainCount: _chainCount };
   };
 
-  const dropGrids = (deletedGridStates: GridState[][], chainCount: number) => {
+  const dropGrids = (deletedGridStates: GridState[][], chainCount: number): void => {
     const { count, gridStates } = allocateGrids(deletedGridStates);
 
     setGridStates(gridStates);

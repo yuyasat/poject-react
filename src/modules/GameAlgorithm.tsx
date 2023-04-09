@@ -12,7 +12,16 @@ import {
   getRotatedSecondRow,
 } from './KeyOperation';
 
-export const getTopState = (topState: TopState, keyCode: string) => {
+export const getTopState = (
+  topState: TopState,
+  keyCode: string
+):
+  | {
+      firstColumn?: number;
+      secondColumn?: number;
+      secondRow?: number;
+    }
+  | undefined => {
   if (keyCode === KeyCode.right) {
     return {
       firstColumn: getMovedFirstColumn(topState, 'right'),
@@ -39,7 +48,7 @@ export const getTopState = (topState: TopState, keyCode: string) => {
   }
 };
 
-export const getTopGridStates = (topState: TopState) => {
+export const getTopGridStates = (topState: TopState): GridState[][] => {
   const { firstColumn, firstRow, firstColor, secondColumn, secondRow, secondColor } = topState;
 
   let topGridStates = _.times(GameSetting.topFieldRow, () =>
@@ -54,28 +63,28 @@ export const getTopGridStates = (topState: TopState) => {
   return topGridStates;
 };
 
-export const countColor = (j: number, i: number, gridStates: GridState[][]) => {
+export const countColor = (j: number, i: number, gridStates: GridState[][]): number => {
   const _gridStates = JSON.parse(JSON.stringify(gridStates));
   const { color } = _gridStates[j][i];
   let n = 1;
   _gridStates[j][i].color = Color.none;
-  if (j - 1 >= 0 && _gridStates[j - 1][i].color === color) {
+  if (j - 1 >= 0 && _gridStates[j - 1][i].color === color && color !== Color.none) {
     n += countColor(j - 1, i, _gridStates);
   }
-  if (j + 1 < GameSetting.row && _gridStates[j + 1][i].color === color) {
+  if (j + 1 < GameSetting.row && _gridStates[j + 1][i].color === color && color !== Color.none) {
     n += countColor(j + 1, i, _gridStates);
   }
-  if (i - 1 >= 0 && _gridStates[j][i - 1].color === color) {
+  if (i - 1 >= 0 && _gridStates[j][i - 1].color === color && color !== Color.none) {
     n += countColor(j, i - 1, _gridStates);
   }
-  if (i + 1 < GameSetting.column && _gridStates[j][i + 1].color === color) {
+  if (i + 1 < GameSetting.column && _gridStates[j][i + 1].color === color && color !== Color.none) {
     n += countColor(j, i + 1, _gridStates);
   }
   _gridStates[j][i].color = color;
   return n;
 };
 
-export const deleteColor = (j: number, i: number, gridStates: GridState[][]) => {
+export const deleteColor = (j: number, i: number, gridStates: GridState[][]): GridState[][] => {
   let _gridStates = JSON.parse(JSON.stringify(gridStates));
 
   const { color } = _gridStates[j][i];
@@ -95,7 +104,9 @@ export const deleteColor = (j: number, i: number, gridStates: GridState[][]) => 
   return _gridStates;
 };
 
-export const allocateGrids = (gridStates: GridState[][]) => {
+export const allocateGrids = (
+  gridStates: GridState[][]
+): { count: number; gridStates: GridState[][] } => {
   const _gridStates = JSON.parse(JSON.stringify(gridStates));
   let count = 0;
   for (let i = 0; i < _gridStates[0].length; i++) {
@@ -113,7 +124,10 @@ export const allocateGrids = (gridStates: GridState[][]) => {
   return { count, gridStates: _gridStates };
 };
 
-export const getDropedGridStates = (gridStates: GridState[][], topState: TopState) => {
+export const getDropedGridStates = (
+  gridStates: GridState[][],
+  topState: TopState
+): GridState[][] => {
   const _gridStates = JSON.parse(JSON.stringify(gridStates));
   const { firstRow, firstColumn, secondRow, secondColumn } = topState;
 
@@ -141,7 +155,7 @@ export const getDropedGridStates = (gridStates: GridState[][], topState: TopStat
   return _gridStates;
 };
 
-export const isColumnFilled = (gridStates: GridState[][], topState: TopState) => {
+export const isColumnFilled = (gridStates: GridState[][], topState: TopState): boolean => {
   const { firstColumn, secondColumn } = topState;
 
   return firstColumn === secondColumn && gridStates[0][firstColumn].color !== Color.none;

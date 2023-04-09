@@ -117,26 +117,29 @@ const Field = () => {
   };
 
   const getDeletedGridStates = (gridStates: GridState[][], chainCount: number) => {
+    let _chainCount = JSON.parse(JSON.stringify(chainCount));
     let _gridStates = JSON.parse(JSON.stringify(gridStates));
     let deletedColor = Color.none;
+    let isAlreadyCounted = false;
     _gridStates.forEach((grids: GridState[], j: number) => {
       grids.forEach((grid: GridState, i: number) => {
         if (grid.color !== Color.none && countColor(j, i, gridStates) >= 4) {
-          if (deletedColor === Color.none || deletedColor === grid.color) {
+          if (!isAlreadyCounted && (deletedColor === Color.none || deletedColor === grid.color)) {
+            isAlreadyCounted = true;
             deletedColor = grid.color;
-            chainCount++;
+            _chainCount++;
           }
           _gridStates = deleteColor(j, i, gridStates);
           setGridStates(_gridStates);
-          setChainCount(chainCount);
-          if (maxChainCount < chainCount) {
-            setMaxChainCount(chainCount);
+          setChainCount(_chainCount);
+          if (maxChainCount < _chainCount) {
+            setMaxChainCount(_chainCount);
           }
         }
       });
     });
 
-    return { gridStates: _gridStates, countedChainCount: chainCount };
+    return { gridStates: _gridStates, countedChainCount: _chainCount };
   };
 
   const dropGrids = (deletedGridStates: GridState[][], chainCount: number) => {

@@ -64,7 +64,7 @@ export const getTopGridStates = (topState: TopState): GridState[][] => {
 };
 
 export const countColor = (j: number, i: number, gridStates: GridState[][]): number => {
-  const _gridStates = JSON.parse(JSON.stringify(gridStates));
+  const _gridStates = structuredClone(gridStates);
   const { color } = _gridStates[j][i];
   let n = 1;
   _gridStates[j][i].color = Color.none;
@@ -85,7 +85,7 @@ export const countColor = (j: number, i: number, gridStates: GridState[][]): num
 };
 
 export const deleteColor = (j: number, i: number, gridStates: GridState[][]): GridState[][] => {
-  let _gridStates = JSON.parse(JSON.stringify(gridStates));
+  let _gridStates = structuredClone(gridStates);
 
   const { color } = _gridStates[j][i];
   _gridStates[j][i].color = Color.none;
@@ -107,7 +107,7 @@ export const deleteColor = (j: number, i: number, gridStates: GridState[][]): Gr
 export const allocateGrids = (
   gridStates: GridState[][]
 ): { count: number; gridStates: GridState[][] } => {
-  const _gridStates = JSON.parse(JSON.stringify(gridStates));
+  const _gridStates = structuredClone(gridStates);
   let count = 0;
   for (let i = 0; i < _gridStates[0].length; i++) {
     let spaces = 0;
@@ -128,7 +128,7 @@ export const getDropedGridStates = (
   gridStates: GridState[][],
   topState: TopState
 ): GridState[][] => {
-  const _gridStates = JSON.parse(JSON.stringify(gridStates));
+  const _gridStates = structuredClone(gridStates);
   const { firstRow, firstColumn, secondRow, secondColumn } = topState;
 
   let r1 = GameSetting.row - 1;

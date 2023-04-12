@@ -123,7 +123,7 @@ const Field = () => {
   };
 
   const hasCountOver4 = (gridStates: GridState[][]): boolean => {
-    let _gridStates = JSON.parse(JSON.stringify(gridStates));
+    let _gridStates = structuredClone(gridStates);
     for (let j = 0; j < gridStates.length; j++) {
       for (let i = 0; i < gridStates[j].length; i++) {
         const grid = gridStates[j][i];
@@ -140,8 +140,8 @@ const Field = () => {
     chainCount: number,
     shoudCountChain: boolean = true
   ): { gridStates: GridState[][]; countedChainCount: number } => {
-    let _chainCount = JSON.parse(JSON.stringify(chainCount));
-    let _gridStates = JSON.parse(JSON.stringify(gridStates));
+    let _chainCount = structuredClone(chainCount);
+    let _gridStates = structuredClone(gridStates);
     let deletedColor = Color.none;
     let isAlreadyCounted = false;
     _gridStates.forEach((grids: GridState[], j: number) => {

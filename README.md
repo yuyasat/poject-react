@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+This app is a game lika poje lika puyopuyo made by React.js and typescript.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Movie:
+https://github.com/yuyasat/poject-react/assets/14013744/1a56a2fd-56ce-44c8-97ec-3884c0563d8f
+
+URL:
+https://poject-51b1e.web.app/
 
 ## Available Scripts
 
